@@ -19,4 +19,6 @@ using namespace std;
 class Encoding {
 public:
     static string CaesarEncrypt(string s, unsigned short int key);
+    
+    static string VigenereEncrypt(string s, string key);
 };
