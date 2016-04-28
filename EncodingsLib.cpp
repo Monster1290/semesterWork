@@ -27,15 +27,22 @@ string Encoding::CaesarEncrypt(string s, unsigned short int key)
 }
 
 string Encoding::VigenereEncrypt(string s, string key) {
-    transform(s.begin(), s.end(), s.begin(), ::toupper);
-    transform(key.begin(), key.end(), key.begin(), ::toupper);
+    transform(key.begin(), key.end(), key.begin(), ::tolower);
     unsigned int j = 0;
     for (int i = 0; i < s.length(); i++)
     {
         if (isalpha(s[i]))
         {
-            s[i] += key[j] - 'A';
-            if (s[i] > 'Z') s[i] += -'Z' + 'A' - 1;
+            int16_t newSymbol = s[i];
+            if (newSymbol <= 'Z' && newSymbol >= 'A') {
+                newSymbol += toupper(key[j]) - 'A';
+                if (newSymbol > 'Z') newSymbol += -'Z' + 'A' - 1;
+            }
+            if (newSymbol <= 'z' && newSymbol >= 'a') {
+                newSymbol += key[j] - 'a';
+                if (newSymbol > 'z') newSymbol += -'z' + 'a' - 1;
+            }
+            s[i] = newSymbol;
         }
         j = j + 1 == key.length() ? 0 : j + 1;
     }
