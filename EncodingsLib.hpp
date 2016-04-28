@@ -13,3 +13,10 @@
 #include <string>
 
 #endif /* EncodingsLib_hpp */
+
+using namespace std;
+
+class Encoding {
+public:
+    static string CaesarEncrypt(string s, unsigned short int key);
+};
