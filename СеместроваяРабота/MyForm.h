@@ -1,4 +1,10 @@
+#include <msclr\marshal_cppstd.h>
+#include <string>
+#include <algorithm>
+#include <locale>
+
 #pragma once
+using namespace std;
 
 namespace СеместроваяРабота {
 
@@ -131,6 +137,7 @@ namespace СеместроваяРабота {
 			this->button1->TabIndex = 9;
 			this->button1->Text = L"Шифр Цезаря";
 			this->button1->UseVisualStyleBackColor = true;
+			this->button1->Click += gcnew System::EventHandler(this, &MyForm::button1_Click);
 			// 
 			// button2
 			// 
@@ -142,6 +149,7 @@ namespace СеместроваяРабота {
 			this->button2->TabIndex = 10;
 			this->button2->Text = L"Шифр Виженера";
 			this->button2->UseVisualStyleBackColor = true;
+			this->button2->Click += gcnew System::EventHandler(this, &MyForm::button2_Click);
 			// 
 			// label5
 			// 
@@ -182,5 +190,20 @@ namespace СеместроваяРабота {
 
 		}
 #pragma endregion
-	};
+	private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
+	//Шифр Цезаря
+			 locale loc("Russian");
+			 if (!(((textBox3->Text[0] >= '1') && (textBox3->Text[0] <= '9'))||(textBox3->Text[0] == '-'))){
+				 MessageBox::Show("Неправильно введены данные");
+				 textBox3->Clear();
+			 }
+	 }
+	private: System::Void button2_Click(System::Object^  sender, System::EventArgs^  e) {
+	//Шифр Виженера
+		     if (((textBox3->Text[0] >= '1') && (textBox3->Text[0] <= '9'))||(textBox3->Text[0] == '-')) {
+				 MessageBox::Show("Неправильно введены данные");
+				 textBox3->Clear();
+			 }
+	}
+};
 }
