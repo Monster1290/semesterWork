@@ -2,9 +2,14 @@
 #include <string>
 #include <algorithm>
 #include <locale>
+using namespace std;
 
 #pragma once
-using namespace std;
+locale loc("Russian");
+unsigned char newEnglishSymbol; //т.к. char только положительные
+char newRussianSymbol; //т.к. char могут быть и отрицательными
+char newSymbol;
+
 void EnglishCaesarEncrypt(string &text, int &key, unsigned char &newEnglishSymbol, int &i)
 //Шифр Цезаря для английского языка
 {
@@ -231,9 +236,6 @@ namespace СеместроваяРабота {
 #pragma endregion
 	private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
 	//Шифр Цезаря
-		locale loc("Russian");
-		unsigned char newEnglishSymbol; //т.к. char только положительные
-		char newRussianSymbol; //т.к. char могут быть и отрицательными
 		if (!(((textBox3->Text[0] >= '1') && (textBox3->Text[0] <= '9'))||(textBox3->Text[0] == '-'))){
 			MessageBox::Show("Неправильно введены данные");
 		    textBox3->Clear();
@@ -253,10 +255,46 @@ namespace СеместроваяРабота {
 	}
 	private: System::Void button2_Click(System::Object^  sender, System::EventArgs^  e) {
 	//Шифр Виженера
-		     if (((textBox3->Text[0] >= '1') && (textBox3->Text[0] <= '9'))||(textBox3->Text[0] == '-')) {
-				 MessageBox::Show("Неправильно введены данные");
-				 textBox3->Clear();
-			 }
+		if (((textBox3->Text[0] >= '1') && (textBox3->Text[0] <= '9'))||(textBox3->Text[0] == '-')) {
+			MessageBox::Show("Неправильно введены данные");
+			textBox3->Clear();
+		}
+		else {
+			String^ key1 = textBox3->Text;
+			string key = msclr::interop::marshal_as<string>(key1);
+			String^ text1 = textBox1->Text;
+			string text = msclr::interop::marshal_as<string>(text1);
+			transform(key.begin(), key.end(), key.begin(), ::tolower);
+			unsigned int j = 0;
+			 for (int i = 0; i < text.length(); i++) {
+				 newSymbol = text[i];
+				 if (isalpha(newSymbol, loc)) {
+					if (((newSymbol >= 'A') && (newSymbol <= 'Z'))||((newSymbol >= 'a') && (newSymbol <= 'z'))){
+						 if ((newSymbol >= 'A') && (newSymbol <= 'Z')) {
+							 newSymbol += toupper(key[j]) - 'A';
+							 if (newSymbol > 'Z') newSymbol += -'Z' + 'A' - 1;
+						 }
+						 if ((newSymbol >= 'a') && (newSymbol <= 'z')) {
+							 newSymbol += key[j] - 'a';
+							 if (newSymbol > 'z') newSymbol += -'z' + 'a' - 1;
+						 }
+					 }
+					 if (((newSymbol >= 'А') && (newSymbol <= 'Я'))||((newSymbol >= 'а') && (newSymbol <= 'я'))){
+						if ((newSymbol >= 'А') && (newSymbol <= 'Я')) {
+							 newSymbol += toupper(key[j]) - 'А' + 1;
+							 if (newSymbol > 'Я') newSymbol += -'Я' + 'А' - 1;
+						}
+						 if ((newSymbol >= 'а') && (newSymbol <= 'я')) {
+							 newSymbol += key[j] - 'а' + 1;
+							if (newSymbol > 'я') newSymbol += -'я' + 'а' - 1;
+						 }
+					 }
+				     text[i] = newSymbol;
+					 j = (j + 1 == key.length()) ? 0 : j + 1;
+				 }
+			}
+			textBox2->Text = gcnew String(text.c_str()); // записывает в textBox2 system::string
+		}
 	}
 };
 }
