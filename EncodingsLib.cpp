@@ -9,6 +9,7 @@
 #include "EncodingsLib.hpp"
 #include <stdexcept>
 #include <algorithm>
+#include <locale>
 
 using namespace std;
 
@@ -56,22 +57,37 @@ string Encoding::CaesarEncrypt(string s, unsigned short int key)
 }
 
 string Encoding::VigenereEncrypt(string s, string key) {
-    transform(key.begin(), key.end(), key.begin(), ::tolower);
+    locale loc("Russian");
+	transform(key.begin(), key.end(), key.begin(), ::tolower);
     unsigned int j = 0;
     for (int i = 0; i < s.length(); i++)
     {
-        if (isalpha(s[i]))
+        if (isalpha((s[i]),loc))
         {
-            char newSymbol = s[i];
-            if (newSymbol <= 'Z' && newSymbol >= 'A') {
-                newSymbol += toupper(key[j]) - 'A';
-                if (newSymbol > 'Z') newSymbol += -'Z' + 'A' - 1;
-            }
-            if (newSymbol <= 'z' && newSymbol >= 'a') {
-                newSymbol += key[j] - 'a';
-                if (newSymbol > 'z') newSymbol += -'z' + 'a' - 1;
-            }
-            s[i] = newSymbol;
+            if (((s[i] >= 'A') && (s[i] <= 'Z'))||((s[i] >= 'a') && (s[i] <= 'z'))){
+				char newEnglishSymbol = s[i];
+				if ((newEnglishSymbol >= 'A') && (newEnglishSymbol <= 'Z')) {
+					newEnglishSymbol += toupper(key[j]) - 'A';
+					if (newEnglishSymbol > 'Z') newEnglishSymbol += -'Z' + 'A' - 1;
+				}
+				if ((newEnglishSymbol >= 'a') && (newEnglishSymbol <= 'z')) {
+				  newEnglishSymbol += key[j] - 'a';
+				  if (newEnglishSymbol > 'z')newEnglishSymbol += -'z' + 'a' - 1;
+				}
+				s[i] = newEnglishSymbol;
+			}
+			if (((s[i] >= 'А') && (s[i] <= 'Я'))||((s[i] >= 'а') && (s[i] <= 'я'))){
+				unsigned char newRussianSymbol=s[i];
+				if ((newRussianSymbol >= 'А') && (newRussianSymbol <= 'Я')) {
+					 newRussianSymbol += toupper(key[j]) - 'А';
+					 if (newRussianSymbol > 'Я') newRussianSymbol += -'Я' + 'А' - 1;
+				}
+				if ((newRussianSymbol >= 'а') && (newRussianSymbol <= 'я')) {
+					newRussianSymbol += key[j] - 'а';
+					if (newRussianSymbol > 'я') newRussianSymbol += -'я' + 'а' - 1;
+				}
+				s[i] = newRussianSymbol;
+			}
         }
         j = j + 1 == key.length() ? 0 : j + 1;
     }
