@@ -193,6 +193,8 @@ namespace СеместроваяРабота {
 	private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
 	//Шифр Цезаря
 			 locale loc("Russian");
+			 unsigned char newEnglishSymbol; //т.к. char только положительные
+			 char newRussianSymbol; //т.к. char могут быть и отрицательными
 			 if (!(((textBox3->Text[0] >= '1') && (textBox3->Text[0] <= '9'))||(textBox3->Text[0] == '-'))){
 				 MessageBox::Show("Неправильно введены данные");
 				 textBox3->Clear();
@@ -202,30 +204,44 @@ namespace СеместроваяРабота {
 				String^ s1 = textBox1->Text;
 				string s = msclr::interop::marshal_as<string>(s1); //преобразует system::string в std::string
 				for (int i = 0; i < s.length(); i++) {
-				if (isalpha(s[i], loc)) {          //если символ - буква
-					 char newSymbol = s[i] + key;
-					 if ((s[i] >= 'a') && (s[i] <= 'z')) {
-						 if (newSymbol > 'z')  newSymbol += -'z' + 'a' - 1; 
-						 if (newSymbol < 'a')  newSymbol += -'a' + 'z' + 1; 
-					 }
-					if ((s[i] >= 'A') && (s[i] <= 'Z')) {
-						if (newSymbol > 'Z') newSymbol += -'Z' + 'A' - 1;
-						if (newSymbol < 'A') newSymbol += -'A' + 'Z' + 1;
+					if (isalpha(s[i], loc)) {          //если символ - буква
+						if (((s[i] >= 'A') && (s[i] <= 'Z'))||((s[i] >= 'a') && (s[i] <= 'z'))){ //английский язык
+							while ((key>27)||(key<-27)){  
+								if (key>27) key=key-26;
+								if (key<-27) key=key+26;
+							}
+						    newEnglishSymbol = s[i] + key;
+							if ((s[i] >= 'a') && (s[i] <= 'z')) {
+								 if (newEnglishSymbol > 'z')  newEnglishSymbol += -'z' + 'a' - 1; 
+								 if (newEnglishSymbol < 'a')  newEnglishSymbol += -'a' + 'z' + 1; 
+							 }
+							if ((s[i] >= 'A') && (s[i] <= 'Z')) {
+								if (newEnglishSymbol > 'Z') newEnglishSymbol += -'Z' + 'A' - 1;
+								if (newEnglishSymbol < 'A') newEnglishSymbol += -'A' + 'Z' + 1;
+							}
+							s[i] = newEnglishSymbol;
+						}
+						if (((s[i] >= 'А') && (s[i] <= 'Я'))||((s[i] >= 'а') && (s[i] <= 'я'))){   //русский язык
+							while ((key>33)||(key<-33)){
+								if (key>33) key=key-32;
+								if (key<-33) key=key+32;
+							}
+							newRussianSymbol = s[i] + key;
+							if ((s[i] >= 'А') && (s[i] <= 'Я')) {
+								if (newRussianSymbol > 'Я') newRussianSymbol += -'Я' + 'А' - 1;
+								if (newRussianSymbol < 'А') newRussianSymbol += -'А' + 'Я' + 1;
+							}
+							if ((s[i] >= 'а') && (s[i] <= 'я')) {
+								if (newRussianSymbol > 'я') newRussianSymbol+= -'я' + 'а' - 1;
+							 if (newRussianSymbol < 'а') newRussianSymbol += -'а' + 'я' + 1;
+							}	
+							s[i] = newRussianSymbol;
+						}
 					}
-					if ((s[i] >= 'А') && (s[i] <= 'Я')) {
-						if (newSymbol > 'Я') newSymbol += -'Я' + 'А' - 1;
-						if (newSymbol < 'А') newSymbol += -'А' + 'Я' + 1;
-					}
-					if ((s[i] >= 'а') && (s[i] <= 'я')) {
-						if (newSymbol > 'я') newSymbol += -'я' + 'а' - 1;
-					    if (newSymbol < 'а') newSymbol += -'а' + 'я' + 1;
-					}
-					 s[i] = newSymbol;
-		   		}
-			}
-			textBox2->Text = gcnew String(s.c_str()); // записывает в textBox2 system::string
-		}	 
-	 }
+				}
+				textBox2->Text = gcnew String(s.c_str()); // записывает в textBox2 system::string
+			 }	 
+	}
 	private: System::Void button2_Click(System::Object^  sender, System::EventArgs^  e) {
 	//Шифр Виженера
 		     if (((textBox3->Text[0] >= '1') && (textBox3->Text[0] <= '9'))||(textBox3->Text[0] == '-')) {
