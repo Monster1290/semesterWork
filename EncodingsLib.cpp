@@ -8,6 +8,7 @@
 
 #include "EncodingsLib.hpp"
 #include <stdexcept>
+#include <algorithm>
 
 using namespace std;
 
@@ -17,7 +18,7 @@ string Encoding::CaesarEncrypt(string s, unsigned short int key)
     {
         if (isalpha(s[i]))
         {
-            uint16_t newSymbol = s[i] + key;
+            char newSymbol = s[i] + key;
             if (s[i] <= 'Z' && s[i] >= 'A') {
                 if (newSymbol > 'Z') newSymbol += -'Z' + 'A' - 1;
                 if (newSymbol < 'A') newSymbol += -'A' + 'Z' + 1;
@@ -26,6 +27,14 @@ string Encoding::CaesarEncrypt(string s, unsigned short int key)
                 if (newSymbol > 'z') newSymbol += -'z' + 'a' - 1;
                 if (newSymbol < 'a') newSymbol += -'a' + 'z' + 1;
             }
+			if ((s[i] >= 'А') && (s[i] <= 'Я')) {
+				if (newSymbol > 'Я')  newSymbol += -'Я' + 'А' - 1;
+			    if (newSymbol < 'А')  newSymbol += -'А' + 'Я' + 1;
+			}
+			if ((s[i] >= 'а') && (s[i] <= 'я')) {
+			    if (newSymbol > 'я')  newSymbol += -'я' + 'а' - 1;
+				if (newSymbol < 'а')  newSymbol += -'а' + 'я' + 1;
+			}
             s[i] = newSymbol;
         }
     }
@@ -39,7 +48,7 @@ string Encoding::VigenereEncrypt(string s, string key) {
     {
         if (isalpha(s[i]))
         {
-            int16_t newSymbol = s[i];
+            char newSymbol = s[i];
             if (newSymbol <= 'Z' && newSymbol >= 'A') {
                 newSymbol += toupper(key[j]) - 'A';
                 if (newSymbol > 'Z') newSymbol += -'Z' + 'A' - 1;
