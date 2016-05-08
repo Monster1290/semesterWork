@@ -1,0 +1,17 @@
+﻿Сборка начата 08.05.2016 10:33:54.
+     1>Проект "c:\Users\настя.комп\documents\visual studio 2012\Projects\СеместроваяРабота\СеместроваяРабота\СеместроваяРабота.vcxproj" в узле 2 (целевые объекты Build).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /AI"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.1\\" /AI"C:\Program Files (x86)\Windows Kits\8.0\References\CommonConfiguration\Neutral" /AI"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.1\Facades\\" /Zi /clr /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _UNICODE /D UNICODE /EHa /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /TP /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.1\mscorlib.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.1\System.Data.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.1\System.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.1\System.Drawing.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.1\System.Windows.Forms.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.1\System.Xml.dll" /analyze- /errorReport:prompt MyForm.cpp
+         MyForm.cpp
+     1>MyForm.cpp(8): warning C4829: Возможно, неправильные параметры функции main. Рекомендуемый вариант - "int main(Platform::Array<Platform::String^>^ argv)"
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /Zi /clr /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _UNICODE /D UNICODE /EHa /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /TP /analyze- /errorReport:prompt "C:\Users\Настя.комп\AppData\Local\Temp\.NETFramework,Version=v4.5.1.AssemblyAttributes.cpp"
+         .NETFramework,Version=v4.5.1.AssemblyAttributes.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"c:\users\настя.комп\documents\visual studio 2012\Projects\СеместроваяРабота\Debug\СеместроваяРабота.exe" /INCREMENTAL /NOLOGO /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"c:\users\настя.комп\documents\visual studio 2012\Projects\СеместроваяРабота\Debug\СеместроваяРабота.pdb" /ASSEMBLYDEBUG /SUBSYSTEM:WINDOWS /TLBID:1 /ENTRY:"main" /DYNAMICBASE /FIXED:NO /NXCOMPAT /MACHINE:X86 Debug\MyForm.obj
+         "Debug\.NETFramework,Version=v4.5.1.AssemblyAttributes.obj"
+         СеместроваяРабота.vcxproj -> c:\users\настя.комп\documents\visual studio 2012\Projects\СеместроваяРабота\Debug\СеместроваяРабота.exe
+     1>Построение проекта "c:\Users\настя.комп\documents\visual studio 2012\Projects\СеместроваяРабота\СеместроваяРабота\СеместроваяРабота.vcxproj" завершено (целевые объекты Build).
+
+Построение успешно завершено.
+
+Затраченное время: 00:00:03.86
