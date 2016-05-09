@@ -20,11 +20,7 @@ string Encoding::CaesarEncrypt(string s, unsigned short int key)
    for (int i = 0; i < s.length(); i++) {
 		if (isalpha(s[i])) {          //если символ - буква
 			if (((s[i] >= 'A') && (s[i] <= 'Z'))||((s[i] >= 'a') && (s[i] <= 'z'))){ //английский язык
-				while ((key>27)||(key<-27)){  
-					if (key>27) key=key-26;
-					if (key<-27) key=key+26;
-				}
-				newEnglishSymbol = s[i] + key;
+                newEnglishSymbol = s[i] + abs(key % 27);
 				if ((s[i] >= 'a') && (s[i] <= 'z')) {
 					if (newEnglishSymbol > 'z')  newEnglishSymbol += -'z' + 'a' - 1; 
 					 if (newEnglishSymbol < 'a')  newEnglishSymbol += -'a' + 'z' + 1; 
@@ -36,11 +32,7 @@ string Encoding::CaesarEncrypt(string s, unsigned short int key)
 				s[i] = newEnglishSymbol;
 			}
 			if (((s[i] >= 'А') && (s[i] <= 'Я'))||((s[i] >= 'а') && (s[i] <= 'я'))){   //русский язык
-				while ((key>33)||(key<-33)){
-					if (key>33) key=key-32;
-					if (key<-33) key=key+32;
-				}
-				newRussianSymbol = s[i] + key;
+				newRussianSymbol = s[i] + abs(key % 33);
 				if ((s[i] >= 'А') && (s[i] <= 'Я')) {
 					if (newRussianSymbol > 'Я') newRussianSymbol += -'Я' + 'А' - 1;
 					if (newRussianSymbol < 'А') newRussianSymbol += -'А' + 'Я' + 1;
@@ -60,9 +52,9 @@ string Encoding::VigenereEncrypt(string s, string key) {
 	locale loc("Russian");
     transform(key.begin(), key.end(), key.begin(), ::tolower);
     unsigned int j = 0;
-	char newSymbol;
+	int16_t newSymbol;  // английские буквы нижнего регистра могут выходить за диапозон значений char
     for (int i = 0; i < s.length(); i++) {
-        newSymbol = text[i];
+        newSymbol = s[i];
 		if (isalpha(newSymbol, loc)) {
 			if (((newSymbol >= 'A') && (newSymbol <= 'Z'))||((newSymbol >= 'a') && (newSymbol <= 'z'))){
 				 if ((newSymbol >= 'A') && (newSymbol <= 'Z')) {
@@ -84,7 +76,7 @@ string Encoding::VigenereEncrypt(string s, string key) {
 					if (newSymbol > 'я') newSymbol += -'я' + 'а' - 1;
 				 }
 			 }
-			 text[i] = newSymbol;
+			 s[i] = newSymbol;
 			 j = j + 1 == key.length() ? 0 : j + 1;
     }
     return s;
