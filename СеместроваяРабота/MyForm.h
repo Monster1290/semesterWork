@@ -51,29 +51,28 @@ void RussianCaesarEncrypt(string &text, int &caesarKey, char &newRussianSymbol, 
 	}
 }
 void EnglishVigenereEncrypt(string &vigenereKey, char &newSymbol,unsigned int &j)
+//Шифр Виженера для английского языка
 {
-	if (((newSymbol >= 'A') && (newSymbol <= 'Z'))||((newSymbol >= 'a') && (newSymbol <= 'z'))){
-		if ((newSymbol >= 'A') && (newSymbol <= 'Z')) {
-			newSymbol += toupper(vigenereKey[j]) - 'A';
-			if (newSymbol > 'Z') newSymbol += -'Z' + 'A' - 1;
-		 }
-		if ((newSymbol >= 'a') && (newSymbol <= 'z')) {
-			newSymbol += vigenereKey[j] - 'a';
-			if (newSymbol > 'z') newSymbol += -'z' + 'a' - 1;
-		 }
+			if ((newSymbol >= 'A') && (newSymbol <= 'Z')) {
+				newSymbol += toupper(vigenereKey[j]) - 'A' + 1;
+				if (newSymbol > 'Z') newSymbol += -'Z' + 'A' - 1;
+			}
+			if ((newSymbol >= 'a') && (newSymbol <= 'z')) {
+				newSymbol += vigenereKey[j] - 'a';
+				if (newSymbol > 'z') newSymbol += -'z' + 'a' - 1;
+			}	
 	}
-}
+
 void RussianVigenereEncrypt(string &vigenereKey, char &newSymbol,unsigned int &j)
+//Шифр Виженера для русского языка
 {
-	if (((newSymbol >= 'А') && (newSymbol <= 'Я'))||((newSymbol >= 'а') && (newSymbol <= 'я'))){
-		if ((newSymbol >= 'А') && (newSymbol <= 'Я')) {
-			newSymbol += toupper(vigenereKey[j]) - 'А' + 1;
-			if (newSymbol > 'Я') newSymbol += -'Я' + 'А' - 1;
-		}
-		if ((newSymbol >= 'а') && (newSymbol <= 'я')) {
-			newSymbol += vigenereKey[j] - 'а' + 1;
-			if (newSymbol > 'я') newSymbol += -'я' + 'а' - 1;
-		}
+	if ((newSymbol >= 'А') && (newSymbol <= 'Я')) {
+		newSymbol += toupper(vigenereKey[j]) - 'А' + 1;
+		if (newSymbol > 'Я') newSymbol += -'Я' + 'А' - 1;
+	}
+	if ((newSymbol >= 'а') && (newSymbol <= 'я')) {
+		newSymbol += vigenereKey[j] - 'а' + 1;
+		if (newSymbol > 'я') newSymbol += -'я' + 'а' - 1;
 	}
 }
 namespace СеместроваяРабота {
@@ -263,7 +262,7 @@ namespace СеместроваяРабота {
 	private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
 	//Шифр Цезаря
 		if (!(((textBox3->Text[0] >= '1') && (textBox3->Text[0] <= '9'))||(textBox3->Text[0] == '-'))){
-			MessageBox::Show("Неправильно введены данные");
+			MessageBox::Show("Неправильно введен ключ");
 		    textBox3->Clear();
 		}
 		else {
@@ -282,7 +281,7 @@ namespace СеместроваяРабота {
 	private: System::Void button2_Click(System::Object^  sender, System::EventArgs^  e) {
 	//Шифр Виженера
 		if (((textBox3->Text[0] >= '1') && (textBox3->Text[0] <= '9'))||(textBox3->Text[0] == '-')) {
-			MessageBox::Show("Неправильно введены данные");
+			MessageBox::Show("Неправильно введен ключ");
 			textBox3->Clear();
 		}
 		else {
@@ -295,13 +294,32 @@ namespace СеместроваяРабота {
 			 for (int i = 0; i < text.length(); i++) {
 				 newSymbol = text[i];
 				 if (isalpha(newSymbol, loc)) {
-					 EnglishVigenereEncrypt(vigenereKey,newSymbol,j);
-					 RussianVigenereEncrypt(vigenereKey,newSymbol,j);
-				     text[i] = newSymbol;
-					 j = (j + 1 == vigenereKey.length()) ? 0 : j + 1;
+					if (((newSymbol >= 'A') && (newSymbol <= 'Z'))||((newSymbol >= 'a') && (newSymbol <= 'z'))){
+						if (((vigenereKey[0] >= 'A') && (vigenereKey[0] <= 'Z'))||((vigenereKey[0] >= 'a') && (vigenereKey[0] <= 'z'))){
+							EnglishVigenereEncrypt(vigenereKey,newSymbol,j);
+						}
+						else {
+							MessageBox::Show("Неправильно введен ключ");
+							textBox3->Clear();
+							break;
+						}
+					}
+					if (((newSymbol >= 'А') && (newSymbol <= 'Я'))||((newSymbol >= 'а') && (newSymbol <= 'я'))){
+						if (((vigenereKey[0] >= 'А') && (vigenereKey[0] <= 'Я'))||((vigenereKey[0] >= 'а') && (vigenereKey[0] <= 'я'))){
+							RussianVigenereEncrypt(vigenereKey,newSymbol,j);
+						}
+						else {
+							MessageBox::Show("Неправильно введен ключ");
+							textBox3->Clear();
+							break;
+							
+						}
+					}
+					text[i] = newSymbol;
+					j = (j + 1 == vigenereKey.length()) ? 0 : j + 1;
 				 }
-			}
-			textBox2->Text = gcnew String(text.c_str()); // записывает в textBox2 system::string
+			 textBox2->Text = gcnew String(text.c_str()); 
+			 }
 		}
 	}
 };
