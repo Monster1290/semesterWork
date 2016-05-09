@@ -10,15 +10,15 @@ unsigned char newEnglishSymbol; //т.к. char только положительные
 char newRussianSymbol; //т.к. char могут быть и отрицательными
 char newSymbol;
 
-void EnglishCaesarEncrypt(string &text, int &key, unsigned char &newEnglishSymbol, int &i)
+void EnglishCaesarEncrypt(string &text, int &caesarKey, unsigned char &newEnglishSymbol, int &i)
 //Шифр Цезаря для английского языка
 {
 	if (((text[i] >= 'A') && (text[i] <= 'Z'))||((text[i] >= 'a') && (text[i] <= 'z'))){ 
-		while ((key>27)||(key<-27)){  
-			if (key>27) key=key-26;
-			if (key<-27) key=key+26;
+		while ((caesarKey>27)||(caesarKey<-27)){  
+			if (caesarKey>27) caesarKey=caesarKey-26;
+			if (caesarKey<-27) caesarKey=caesarKey+26;
 		}
-	    newEnglishSymbol = text[i] + key;
+	    newEnglishSymbol = text[i] + caesarKey;
 		if ((text[i] >= 'a') && (text[i] <= 'z')) {
 			if (newEnglishSymbol > 'z')  newEnglishSymbol += -'z' + 'a' - 1; 
 			if (newEnglishSymbol < 'a')  newEnglishSymbol += -'a' + 'z' + 1; 
@@ -30,15 +30,15 @@ void EnglishCaesarEncrypt(string &text, int &key, unsigned char &newEnglishSymbo
 		text[i] = newEnglishSymbol;
 	}
 }
-void RussianCaesarEncrypt(string &text, int &key, char &newRussianSymbol, int &i)
+void RussianCaesarEncrypt(string &text, int &caesarKey, char &newRussianSymbol, int &i)
 //Шифр Цезаря для русского языка
 {
 	if (((text[i] >= 'А') && (text[i] <= 'Я'))||((text[i] >= 'а') && (text[i] <= 'я'))){   
-		while ((key>33)||(key<-33)){
-			if (key>33) key=key-32;
-			if (key<-33) key=key+32;
+		while ((caesarKey>33)||(caesarKey<-33)){
+			if (caesarKey>33) caesarKey=caesarKey-32;
+			if (caesarKey<-33) caesarKey=caesarKey+32;
 		}
-		newRussianSymbol = text[i] + key;
+		newRussianSymbol = text[i] + caesarKey;
 		if ((text[i] >= 'А') && (text[i] <= 'Я')) {
 			if (newRussianSymbol > 'Я') newRussianSymbol += -'Я' + 'А' - 1;
 			if (newRussianSymbol < 'А') newRussianSymbol += -'А' + 'Я' + 1;
@@ -48,6 +48,32 @@ void RussianCaesarEncrypt(string &text, int &key, char &newRussianSymbol, int &i
 			if (newRussianSymbol < 'а') newRussianSymbol += -'а' + 'я' + 1;
 		}	
 		text[i] = newRussianSymbol;
+	}
+}
+void EnglishVigenereEncrypt(string &vigenereKey, char &newSymbol,unsigned int &j)
+{
+	if (((newSymbol >= 'A') && (newSymbol <= 'Z'))||((newSymbol >= 'a') && (newSymbol <= 'z'))){
+		if ((newSymbol >= 'A') && (newSymbol <= 'Z')) {
+			newSymbol += toupper(vigenereKey[j]) - 'A';
+			if (newSymbol > 'Z') newSymbol += -'Z' + 'A' - 1;
+		 }
+		if ((newSymbol >= 'a') && (newSymbol <= 'z')) {
+			newSymbol += vigenereKey[j] - 'a';
+			if (newSymbol > 'z') newSymbol += -'z' + 'a' - 1;
+		 }
+	}
+}
+void RussianVigenereEncrypt(string &vigenereKey, char &newSymbol,unsigned int &j)
+{
+	if (((newSymbol >= 'А') && (newSymbol <= 'Я'))||((newSymbol >= 'а') && (newSymbol <= 'я'))){
+		if ((newSymbol >= 'А') && (newSymbol <= 'Я')) {
+			newSymbol += toupper(vigenereKey[j]) - 'А' + 1;
+			if (newSymbol > 'Я') newSymbol += -'Я' + 'А' - 1;
+		}
+		if ((newSymbol >= 'а') && (newSymbol <= 'я')) {
+			newSymbol += vigenereKey[j] - 'а' + 1;
+			if (newSymbol > 'я') newSymbol += -'я' + 'а' - 1;
+		}
 	}
 }
 namespace СеместроваяРабота {
@@ -241,13 +267,13 @@ namespace СеместроваяРабота {
 		    textBox3->Clear();
 		}
 		else {
-			int key= Convert::ToInt32(textBox3->Text);
+			int caesarKey= Convert::ToInt32(textBox3->Text);
 			String^ text1 = textBox1->Text;
 			string text = msclr::interop::marshal_as<string>(text1); //преобразует system::string в std::string
 			for (int i = 0; i < text.length(); i++) {
 				if (isalpha(text[i], loc)) {          
-					EnglishCaesarEncrypt(text,key,newEnglishSymbol,i);
-					RussianCaesarEncrypt(text,key,newRussianSymbol,i);	
+					EnglishCaesarEncrypt(text,caesarKey,newEnglishSymbol,i);
+					RussianCaesarEncrypt(text,caesarKey,newRussianSymbol,i);	
 				}
 			}
 			textBox2->Text = gcnew String(text.c_str()); // записывает в textBox2 system::string
@@ -261,36 +287,18 @@ namespace СеместроваяРабота {
 		}
 		else {
 			String^ key1 = textBox3->Text;
-			string key = msclr::interop::marshal_as<string>(key1);
+			string vigenereKey = msclr::interop::marshal_as<string>(key1);
 			String^ text1 = textBox1->Text;
 			string text = msclr::interop::marshal_as<string>(text1);
-			transform(key.begin(), key.end(), key.begin(), ::tolower);
+			transform(vigenereKey.begin(), vigenereKey.end(), vigenereKey.begin(), ::tolower);
 			unsigned int j = 0;
 			 for (int i = 0; i < text.length(); i++) {
 				 newSymbol = text[i];
 				 if (isalpha(newSymbol, loc)) {
-					if (((newSymbol >= 'A') && (newSymbol <= 'Z'))||((newSymbol >= 'a') && (newSymbol <= 'z'))){
-						 if ((newSymbol >= 'A') && (newSymbol <= 'Z')) {
-							 newSymbol += toupper(key[j]) - 'A';
-							 if (newSymbol > 'Z') newSymbol += -'Z' + 'A' - 1;
-						 }
-						 if ((newSymbol >= 'a') && (newSymbol <= 'z')) {
-							 newSymbol += key[j] - 'a';
-							 if (newSymbol > 'z') newSymbol += -'z' + 'a' - 1;
-						 }
-					 }
-					 if (((newSymbol >= 'А') && (newSymbol <= 'Я'))||((newSymbol >= 'а') && (newSymbol <= 'я'))){
-						if ((newSymbol >= 'А') && (newSymbol <= 'Я')) {
-							 newSymbol += toupper(key[j]) - 'А' + 1;
-							 if (newSymbol > 'Я') newSymbol += -'Я' + 'А' - 1;
-						}
-						 if ((newSymbol >= 'а') && (newSymbol <= 'я')) {
-							 newSymbol += key[j] - 'а' + 1;
-							if (newSymbol > 'я') newSymbol += -'я' + 'а' - 1;
-						 }
-					 }
+					 EnglishVigenereEncrypt(vigenereKey,newSymbol,j);
+					 RussianVigenereEncrypt(vigenereKey,newSymbol,j);
 				     text[i] = newSymbol;
-					 j = (j + 1 == key.length()) ? 0 : j + 1;
+					 j = (j + 1 == vigenereKey.length()) ? 0 : j + 1;
 				 }
 			}
 			textBox2->Text = gcnew String(text.c_str()); // записывает в textBox2 system::string
