@@ -13,14 +13,14 @@
 
 using namespace std;
 
-string Encoding::CaesarEncrypt(string s, unsigned short int key)
+string Encoding::CaesarEncrypt(string s, short int key)
 {
    unsigned char newEnglishSymbol; //т.к. char только положительные
    char newRussianSymbol; //т.к. char могут быть и отрицательными
    for (int i = 0; i < s.length(); i++) {
 		if (isalpha(s[i])) {          //если символ - буква
 			if (((s[i] >= 'A') && (s[i] <= 'Z'))||((s[i] >= 'a') && (s[i] <= 'z'))){ //английский язык
-                newEnglishSymbol = s[i] + abs(key % 27);
+                newEnglishSymbol = s[i] + (key % 26);
 				if ((s[i] >= 'a') && (s[i] <= 'z')) {
 					if (newEnglishSymbol > 'z')  newEnglishSymbol += -'z' + 'a' - 1; 
 					 if (newEnglishSymbol < 'a')  newEnglishSymbol += -'a' + 'z' + 1; 
@@ -32,7 +32,7 @@ string Encoding::CaesarEncrypt(string s, unsigned short int key)
 				s[i] = newEnglishSymbol;
 			}
 			if (((s[i] >= 'А') && (s[i] <= 'Я'))||((s[i] >= 'а') && (s[i] <= 'я'))){   //русский язык
-				newRussianSymbol = s[i] + abs(key % 33);
+				newRussianSymbol = s[i] + (key % 33);
 				if ((s[i] >= 'А') && (s[i] <= 'Я')) {
 					if (newRussianSymbol > 'Я') newRussianSymbol += -'Я' + 'А' - 1;
 					if (newRussianSymbol < 'А') newRussianSymbol += -'А' + 'Я' + 1;
