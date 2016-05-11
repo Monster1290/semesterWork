@@ -6,73 +6,66 @@ using namespace std;
 
 #pragma once
 locale loc("Russian");
-unsigned char newEnglishSymbol; //т.к. char только положительные
-char newRussianSymbol; //т.к. char могут быть и отрицательными
-char newSymbol;
+unsigned char newCaesarEnglishSymbol; //т.к. char только положительные
+char newCaesarRussianSymbol; //т.к. char могут быть и отрицательными
+short int newVigenereEnglishSymbol;
+char newVigenereRussianSymbol;
 
-void EnglishCaesarEncrypt(string &text, int &caesarKey, unsigned char &newEnglishSymbol, int &i)
+void EnglishCaesarEncrypt(string &text, int &caesarKey, unsigned char &newCaesarEnglishSymbol, int &i)
 //Шифр Цезаря для английского языка
 {
 	if (((text[i] >= 'A') && (text[i] <= 'Z'))||((text[i] >= 'a') && (text[i] <= 'z'))){ 
-		while ((caesarKey>27)||(caesarKey<-27)){  
-			if (caesarKey>27) caesarKey=caesarKey-26;
-			if (caesarKey<-27) caesarKey=caesarKey+26;
-		}
-	    newEnglishSymbol = text[i] + caesarKey;
+	    newCaesarEnglishSymbol = text[i] + (caesarKey%26);
 		if ((text[i] >= 'a') && (text[i] <= 'z')) {
-			if (newEnglishSymbol > 'z')  newEnglishSymbol += -'z' + 'a' - 1; 
-			if (newEnglishSymbol < 'a')  newEnglishSymbol += -'a' + 'z' + 1; 
+			if (newCaesarEnglishSymbol> 'z')  newCaesarEnglishSymbol += -'z' + 'a' - 1; 
+			if (newCaesarEnglishSymbol < 'a')  newCaesarEnglishSymbol += -'a' + 'z' + 1; 
 		}
 		if ((text[i] >= 'A') && (text[i] <= 'Z')) {
-			if (newEnglishSymbol > 'Z') newEnglishSymbol += -'Z' + 'A' - 1;
-			if (newEnglishSymbol < 'A') newEnglishSymbol += -'A' + 'Z' + 1;
+			if (newCaesarEnglishSymbol > 'Z') newCaesarEnglishSymbol += -'Z' + 'A' - 1;
+			if (newCaesarEnglishSymbol < 'A') newCaesarEnglishSymbol += -'A' + 'Z' + 1;
 		}
-		text[i] = newEnglishSymbol;
+		text[i] = newCaesarEnglishSymbol;
 	}
 }
-void RussianCaesarEncrypt(string &text, int &caesarKey, char &newRussianSymbol, int &i)
+void RussianCaesarEncrypt(string &text, int &caesarKey, char &newCaesarRussianSymbol, int &i)
 //Шифр Цезаря для русского языка
 {
 	if (((text[i] >= 'А') && (text[i] <= 'Я'))||((text[i] >= 'а') && (text[i] <= 'я'))){   
-		while ((caesarKey>33)||(caesarKey<-33)){
-			if (caesarKey>33) caesarKey=caesarKey-32;
-			if (caesarKey<-33) caesarKey=caesarKey+32;
-		}
-		newRussianSymbol = text[i] + caesarKey;
+		newCaesarRussianSymbol = text[i] + (caesarKey%32);
 		if ((text[i] >= 'А') && (text[i] <= 'Я')) {
-			if (newRussianSymbol > 'Я') newRussianSymbol += -'Я' + 'А' - 1;
-			if (newRussianSymbol < 'А') newRussianSymbol += -'А' + 'Я' + 1;
+			if (newCaesarRussianSymbol > 'Я') newCaesarRussianSymbol += -'Я' + 'А' - 1;
+			if (newCaesarRussianSymbol < 'А') newCaesarRussianSymbol += -'А' + 'Я' + 1;
 		}
 		if ((text[i] >= 'а') && (text[i] <= 'я')) {
-			if (newRussianSymbol > 'я') newRussianSymbol+= -'я' + 'а' - 1;
-			if (newRussianSymbol < 'а') newRussianSymbol += -'а' + 'я' + 1;
+			if (newCaesarRussianSymbol > 'я') newCaesarRussianSymbol+= -'я' + 'а' - 1;
+			if (newCaesarRussianSymbol < 'а') newCaesarRussianSymbol += -'а' + 'я' + 1;
 		}	
-		text[i] = newRussianSymbol;
+		text[i] = newCaesarRussianSymbol;
 	}
 }
-void EnglishVigenereEncrypt(string &vigenereKey, char &newSymbol,unsigned int &j)
+void EnglishVigenereEncrypt(string &vigenereKey, short int &newVigenereEnglishSymbol,unsigned int &j)
 //Шифр Виженера для английского языка
 {
-			if ((newSymbol >= 'A') && (newSymbol <= 'Z')) {
-				newSymbol += toupper(vigenereKey[j]) - 'A' + 1;
-				if (newSymbol > 'Z') newSymbol += -'Z' + 'A' - 1;
-			}
-			if ((newSymbol >= 'a') && (newSymbol <= 'z')) {
-				newSymbol += vigenereKey[j] - 'a';
-				if (newSymbol > 'z') newSymbol += -'z' + 'a' - 1;
-			}	
+	if ((newVigenereEnglishSymbol >= 'A') && (newVigenereEnglishSymbol <= 'Z')) {
+		newVigenereEnglishSymbol += toupper(vigenereKey[j]) - 'A';
+		if (newVigenereEnglishSymbol > 'Z') newVigenereEnglishSymbol += -'Z' + 'A' - 1;
 	}
+	if ((newVigenereEnglishSymbol >= 'a') && (newVigenereEnglishSymbol <= 'z')) {
+		newVigenereEnglishSymbol += vigenereKey[j] - 'a';
+		if (newVigenereEnglishSymbol > 'z') newVigenereEnglishSymbol += -'z' + 'a' - 1;
+	}	
+}
 
-void RussianVigenereEncrypt(string &vigenereKey, char &newSymbol,unsigned int &j)
+void RussianVigenereEncrypt(string &vigenereKey, char &newVigenereRussianSymbol,unsigned int &j)
 //Шифр Виженера для русского языка
 {
-	if ((newSymbol >= 'А') && (newSymbol <= 'Я')) {
-		newSymbol += toupper(vigenereKey[j]) - 'А' + 1;
-		if (newSymbol > 'Я') newSymbol += -'Я' + 'А' - 1;
+	if ((newVigenereRussianSymbol >= 'А') && (newVigenereRussianSymbol <= 'Я')) {
+		newVigenereRussianSymbol += toupper(vigenereKey[j]) - 'А' + 1;
+		if (newVigenereRussianSymbol > 'Я') newVigenereRussianSymbol += -'Я' + 'А' - 1;
 	}
-	if ((newSymbol >= 'а') && (newSymbol <= 'я')) {
-		newSymbol += vigenereKey[j] - 'а' + 1;
-		if (newSymbol > 'я') newSymbol += -'я' + 'а' - 1;
+	if ((newVigenereRussianSymbol >= 'а') && (newVigenereRussianSymbol <= 'я')) {
+		newVigenereRussianSymbol += vigenereKey[j] - 'а' + 1;
+		if (newVigenereRussianSymbol > 'я') newVigenereRussianSymbol += -'я' + 'а' - 1;
 	}
 }
 namespace СеместроваяРабота {
@@ -262,7 +255,7 @@ namespace СеместроваяРабота {
 	private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
 	//Шифр Цезаря
 		if (!(((textBox3->Text[0] >= '1') && (textBox3->Text[0] <= '9'))||(textBox3->Text[0] == '-'))){
-			MessageBox::Show("Неправильно введен ключ");
+			MessageBox::Show("Неправильно введен ключ! Введите число!");
 		    textBox3->Clear();
 		}
 		else {
@@ -271,8 +264,8 @@ namespace СеместроваяРабота {
 			string text = msclr::interop::marshal_as<string>(text1); //преобразует system::string в std::string
 			for (int i = 0; i < text.length(); i++) {
 				if (isalpha(text[i], loc)) {          
-					EnglishCaesarEncrypt(text,caesarKey,newEnglishSymbol,i);
-					RussianCaesarEncrypt(text,caesarKey,newRussianSymbol,i);	
+					EnglishCaesarEncrypt(text,caesarKey,newCaesarEnglishSymbol,i);
+					RussianCaesarEncrypt(text,caesarKey,newCaesarRussianSymbol,i);	
 				}
 			}
 			textBox2->Text = gcnew String(text.c_str()); // записывает в textBox2 system::string
@@ -281,7 +274,7 @@ namespace СеместроваяРабота {
 	private: System::Void button2_Click(System::Object^  sender, System::EventArgs^  e) {
 	//Шифр Виженера
 		if (((textBox3->Text[0] >= '1') && (textBox3->Text[0] <= '9'))||(textBox3->Text[0] == '-')) {
-			MessageBox::Show("Неправильно введен ключ");
+			MessageBox::Show("Неправильно введен ключ! Введите слово!");
 			textBox3->Clear();
 		}
 		else {
@@ -292,30 +285,32 @@ namespace СеместроваяРабота {
 			transform(vigenereKey.begin(), vigenereKey.end(), vigenereKey.begin(), ::tolower);
 			unsigned int j = 0;
 			 for (int i = 0; i < text.length(); i++) {
-				 newSymbol = text[i];
-				 if (isalpha(newSymbol, loc)) {
-					if (((newSymbol >= 'A') && (newSymbol <= 'Z'))||((newSymbol >= 'a') && (newSymbol <= 'z'))){
+				 if (isalpha(text[i], loc)) {
+					if (((text[i] >= 'A') && (text[i] <= 'Z'))||((text[i] >= 'a') && (text[i] <= 'z'))){
 						if (((vigenereKey[0] >= 'A') && (vigenereKey[0] <= 'Z'))||((vigenereKey[0] >= 'a') && (vigenereKey[0] <= 'z'))){
-							EnglishVigenereEncrypt(vigenereKey,newSymbol,j);
+							newVigenereEnglishSymbol=text[i];
+							EnglishVigenereEncrypt(vigenereKey,newVigenereEnglishSymbol,j);
 						}
 						else {
-							MessageBox::Show("Неправильно введен ключ");
+							MessageBox::Show("Неправильно введен ключ! Введите ключ на английскоя языке!");
 							textBox3->Clear();
 							break;
 						}
+						text[i] = newVigenereEnglishSymbol;
 					}
-					if (((newSymbol >= 'А') && (newSymbol <= 'Я'))||((newSymbol >= 'а') && (newSymbol <= 'я'))){
+					if (((text[i] >= 'А') && (text[i] <= 'Я'))||((text[i] >= 'а') && (text[i] <= 'я'))){
 						if (((vigenereKey[0] >= 'А') && (vigenereKey[0] <= 'Я'))||((vigenereKey[0] >= 'а') && (vigenereKey[0] <= 'я'))){
-							RussianVigenereEncrypt(vigenereKey,newSymbol,j);
+							newVigenereRussianSymbol=text[i];
+							RussianVigenereEncrypt(vigenereKey,newVigenereRussianSymbol,j);
 						}
 						else {
-							MessageBox::Show("Неправильно введен ключ");
+							MessageBox::Show("Неправильно введен ключ! Введите ключ на русском языке!");
 							textBox3->Clear();
 							break;
-							
 						}
+						text[i] = newVigenereRussianSymbol;
 					}
-					text[i] = newSymbol;
+					
 					j = (j + 1 == vigenereKey.length()) ? 0 : j + 1;
 				 }
 			 textBox2->Text = gcnew String(text.c_str()); 
