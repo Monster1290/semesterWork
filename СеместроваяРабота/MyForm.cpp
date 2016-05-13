@@ -75,6 +75,13 @@ void RussianVigenereEncrypt(string &vigenereKey, char &newVigenereRussianSymbol,
 		if (newVigenereRussianSymbol > 'я') newVigenereRussianSymbol += -'я' + 'а' - 1;
 	}
 }
+//	Проверяет, относиться ли входная буква к входному алфавиту.
+bool checkLanguage(char symForCheck, char firstAlphabetSym, char lastAlphabetSym) {
+	char UpperFirst = toupper(firstAlphabetSym);
+	char UpperLast = toupper(lastAlphabetSym);
+	bool isUpper = ((symForCheck >= UpperFirst) && (symForCheck <= UpperLast));
+	return (isUpper) || ((symForCheck >= firstAlphabetSym) && (symForCheck <= lastAlphabetSym));
+}
 
 namespace СеместроваяРабота {
 System::Void MyForm::button1_Click(System::Object^  sender, System::EventArgs^  e) {
@@ -99,6 +106,7 @@ System::Void MyForm::button1_Click(System::Object^  sender, System::EventArgs^  
 			textBox2->Text = gcnew String(text.c_str()); // записывает в textBox2 system::string
 		}	 
 	}
+
 System::Void MyForm::button2_Click(System::Object^  sender, System::EventArgs^  e) {
 	//Шифр Виженера
 		locale loc("Russian");
@@ -117,8 +125,8 @@ System::Void MyForm::button2_Click(System::Object^  sender, System::EventArgs^  
 			unsigned int j = 0;
 			 for (int i = 0; i < text.length(); i++) {
 				 if (isalpha(text[i], loc)) {
-					if (((text[i] >= 'A') && (text[i] <= 'Z'))||((text[i] >= 'a') && (text[i] <= 'z'))){
-						if (((vigenereKey[0] >= 'A') && (vigenereKey[0] <= 'Z'))||((vigenereKey[0] >= 'a') && (vigenereKey[0] <= 'z'))){
+					 if (checkLanguage(text[i], 'a', 'z')){
+						 if (checkLanguage(vigenereKey[0], 'a', 'z')){
 							newVigenereEnglishSymbol=text[i];
 							EnglishVigenereEncrypt(vigenereKey,newVigenereEnglishSymbol,j);
 						}
@@ -129,8 +137,8 @@ System::Void MyForm::button2_Click(System::Object^  sender, System::EventArgs^  
 						}
 						text[i] = newVigenereEnglishSymbol;
 					}
-					if (((text[i] >= 'А') && (text[i] <= 'Я'))||((text[i] >= 'а') && (text[i] <= 'я'))){
-						if (((vigenereKey[0] >= 'А') && (vigenereKey[0] <= 'Я'))||((vigenereKey[0] >= 'а') && (vigenereKey[0] <= 'я'))){
+					 if (checkLanguage(text[i], 'а', 'я')){
+						 if (checkLanguage(vigenereKey[0], 'а', 'я')){
 							newVigenereRussianSymbol=text[i];
 							RussianVigenereEncrypt(vigenereKey,newVigenereRussianSymbol,j);
 						}
